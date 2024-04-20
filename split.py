@@ -3,9 +3,9 @@ import shutil
 import random
 
 # Define paths with raw string literals
-source_dir = r'C:\Users\Januka\OneDrive - University of Moratuwa\Github\image_anomaly_detection_using_autoencoders\cell_images2\Uninfected'
-train_dir = r'C:\Users\Januka\OneDrive - University of Moratuwa\Github\image_anomaly_detection_using_autoencoders\cell_images2\uninfected_train'
-test_dir = r'C:\Users\Januka\OneDrive - University of Moratuwa\Github\image_anomaly_detection_using_autoencoders\cell_images2\uninfected_test'
+source_dir = r'\cell_images2\Uninfected'
+train_dir = r'\cell_images2\uninfected_train'
+test_dir = r'\cell_images2\uninfected_test'
 
 # Create directories if they don't exist
 os.makedirs(train_dir, exist_ok=True)
