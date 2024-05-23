@@ -1,0 +1,80 @@
+# main.py
+
+import tensorflow as tf
+import numpy as np
+from sklearn.neighbors import KernelDensity
+from PIL import Image
+import matplotlib.pyplot as plt
+import random
+
+# Configuration 
+SIZE = 128
+OUT_VECTOR_SHAPE = None # Global variable for encoder output shape
+DENSITY_THRESHOLD = 2500 
+RECONSTRUCTION_ERROR_THRESHOLD = 0.004 
+
+def load_model(model_path='autoencoder_model.h5'):
+    """Loads the trained autoencoder model from a file."""
+    return tf.keras.models.load_model(model_path)
+
+def create_encoder_model(autoencoder_model):
+    """Extracts the encoder part from the trained autoencoder."""
+    encoder_model = Sequential()
+    encoder_model.add(Conv2D(64, (3, 3), activation='relu', padding='same', input_shape=(SIZE, SIZE, 3), weights=autoencoder_model.layers[0].get_weights()))
+    encoder_model.add(MaxPooling2D((2, 2), padding='same'))
+    encoder_model.add(Conv2D(32, (3, 3), activation='relu', padding='same', weights=autoencoder_model.layers[2].get_weights()))
+    encoder_model.add(MaxPooling2D((2, 2), padding='same'))
+    encoder_model.add(Conv2D(16, (3, 3), activation='relu', padding='same', weights=autoencoder_model.layers[4].get_weights()))
+    encoder_model.add(MaxPooling2D((2, 2), padding='same'))
+    global OUT_VECTOR_SHAPE 
+    OUT_VECTOR_SHAPE = encoder_model.output_shape[1] * encoder_model.output_shape[2] * encoder_model.output_shape[3]
+    return encoder_model
+
+def train_kde(encoder_model, train_generator):
+    """Trains a Kernel Density Estimation model on encoded normal images."""
+    encoded_images = encoder_model.predict(train_generator)
+    encoded_images_vector = np.reshape(encoded_images, (encoded_images.shape[0], -1))
+    kde = KernelDensity(kernel='gaussian', bandwidth=0.2).fit(encoded_images_vector)
+    return kde
+
+def preprocess_image(img_path):
+    """Preprocesses a single image for prediction."""
+    img = Image.open(img_path)
+    img = np.array(img.resize((SIZE, SIZE), Image.ANTIALIAS))
+    img = img / 255.
+    img = img[np.newaxis, :, :, :]
+    return img
+
+def check_anomaly(autoencoder_model, encoder_model, kde, img_path):
+    """Checks if an image is anomalous based on density and reconstruction error."""
+    img = preprocess_image(img_path)
+    encoded_img = encoder_model.predict(img)
+    encoded_img = np.reshape(encoded_img, (1, -1)) 
+    density = kde.score_samples(encoded_img)[0]
+    reconstruction = autoencoder_model.predict(img)
+    reconstruction_error = autoencoder_model.evaluate(reconstruction, img, batch_size=1, verbose=0)[0]  
+    if density < DENSITY_THRESHOLD or reconstruction_error > RECONSTRUCTION_ERROR_THRESHOLD:
+        print("The image is an anomaly")
+    else:
+        print("The image is NOT an anomaly")
+
+if __name__ == "__main__":
+    # 1. Load Trained Model and Create Encoder
+    autoencoder = load_model()
+    encoder = create_encoder_model(autoencoder)
+
+    # 2. Load Training Data for KDE 
+    train_datagen = ImageDataGenerator(rescale=1./255)
+    train_generator = train_datagen.flow_from_directory(
+        'cell_images2/uninfected_train/',
+        target_size=(SIZE, SIZE),
+        batch_size=32, # Reduce batch size if memory issues occur
+        class_mode='input'
+    ) 
+
+    # 3. Train KDE Model 
+    kde_model = train_kde(encoder, train_generator)
+
+    # 4. Anomaly Detection 
+    test_image_path = 'path_to_your_test_image.png' # Replace with the actual path 
+    check_anomaly(autoencoder, encoder, kde_model, test_image_path) 
