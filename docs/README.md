@@ -18,7 +18,7 @@ The project addresses a fundamental challenge in anomaly detection using autoenc
 
 The architecture employed in this project leverages a VGG16-based model, modified for the task of encoding and decoding images for anomaly detection. Here's a breakdown of how the architecture is structured:
 
-- **Encoder:** The encoder part of the architecture is based on the VGG16 model, with the fully connected layers removed. The final layer of this modified VGG16 encoder outputs a 7x7x512 encoded image vector. This condensed representation captures the essential features of the input images.
+- **Encoder:** The encoder part of the architecture is based on the VGG16 model, with the fully connected layers removed. The final layer of this modified VGG16 encoder outputs a 7x7x7 encoded image vector. This condensed representation captures the essential features of the input images.
 
 - **Kernel Density Estimation (KDE):** In the middle of the architecture, Kernel Density Estimation (KDE) is used to calculate the likelihood of an image belonging to the 'good' class. KDE is applied to the training data to provide an estimate of where the input image vector space lies within the latent space. This estimation helps in determining the 'normal' density regions.
 
