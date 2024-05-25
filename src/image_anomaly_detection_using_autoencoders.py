@@ -1,4 +1,3 @@
-# https://youtu.be/q_tpFGHiRgg
 """
 Detecting anomaly images using AutoEncoders. 
 (Sorting an entire image as either normal or anomaly)
