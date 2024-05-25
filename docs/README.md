@@ -8,13 +8,13 @@ The project focuses on detecting anomalies in images using autoencoder neural ne
 
 ### Overview
 
-![Overview Diagram](docs/assets/overview.png)
+![Overview Diagram](/docs/assets/overview.png)
 
 The project addresses a fundamental challenge in anomaly detection using autoencoders, particularly when the training set contains outliers. Continued training of autoencoders tends to reduce the reconstruction error of outliers, thereby degrading anomaly detection performance. To mitigate this issue, an adversarial autoencoder architecture is employed, which imposes a prior distribution on the latent representation, typically placing anomalies into low likelihood regions. By utilizing the likelihood model, potential anomalies can be identified and rejected during training, resulting in a more robust anomaly detector.
 
 ### Architecture
 
-![Architecture Diagram](docs/assets/architecture.png)
+![Architecture Diagram](/docs/assets/architecture.png)
 
 The architecture employed in this project leverages a VGG16-based model, modified for the task of encoding and decoding images for anomaly detection. Here's a breakdown of how the architecture is structured:
 
