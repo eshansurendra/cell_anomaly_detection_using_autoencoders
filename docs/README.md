@@ -2,6 +2,13 @@
 
 This repository provides an implementation of an anomaly detection system for cell images using autoencoders. The project draws inspiration from the paper "Robust Anomaly Detection in Images using Adversarial Autoencoders" by Laura Beggel, Michael Pfeiffer, and Bernd Bischl.
 
+![Python](https://img.shields.io/badge/Python-3.9.2-blue)
+![Pillow](https://img.shields.io/badge/Pillow-8.3.2-green)
+![matplotlib](https://img.shields.io/badge/matplotlib-3.4.3-orange)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-0.24.2-yellow)
+![numpy](https://img.shields.io/badge/numpy-1.21.2-blue)
+![tensorflow](https://img.shields.io/badge/tensorflow-2.6.0-green)
+
 ## Project Structure
 
 The project focuses on detecting anomalies in images using autoencoder neural networks. An autoencoder learns to reconstruct normal images and can classify images as anomalies when the reconstruction error exceeds a certain threshold. The code in this repository implements an autoencoder-based anomaly detection method using TensorFlow.
@@ -106,13 +113,6 @@ def check_anomaly(img_path):
 
 
 ## Prerequisites
-
-![Python](https://img.shields.io/badge/Python-3.9.2-blue)
-![Pillow](https://img.shields.io/badge/Pillow-8.3.2-green)
-![matplotlib](https://img.shields.io/badge/matplotlib-3.4.3-orange)
-![scikit-learn](https://img.shields.io/badge/scikit--learn-0.24.2-yellow)
-![numpy](https://img.shields.io/badge/numpy-1.21.2-blue)
-![tensorflow](https://img.shields.io/badge/tensorflow-2.6.0-green)
 
 Install the required packages using:
 
